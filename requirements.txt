@@ -1,5 +1,8 @@
-# Used by Streamlit Community Cloud (it installs from the repo-root requirements.txt).
-# Installs the smsclf package + scikit-learn/pandas, which the standalone demo needs.
-.
+# Used by Streamlit Community Cloud (standalone demo). Listed explicitly rather than `.`
+# so the install does not depend on the working directory; the app adds ./src to sys.path.
 streamlit==1.65.0
 requests
+scikit-learn==1.8.0
+pandas==3.0.2
+numpy
+joblib==1.5.3
