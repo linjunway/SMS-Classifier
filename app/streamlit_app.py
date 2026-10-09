@@ -36,7 +36,7 @@ EXAMPLES = {
 
 st.set_page_config(page_title="SMS Smishing Classifier", page_icon="📱", layout="wide")
 st.title("📱 SMS Smishing Classifier")
-st.caption("Normal vs Spam vs Smishing — hierarchical scikit-learn ensemble served via FastAPI")
+st.caption("Normal vs Spam vs Smishing: Hierarchical Scikit-Learn Ensemble Served Via FastAPI")
 
 
 @st.cache_resource(show_spinner="Loading model (the first start trains it, ~30 s)...")
