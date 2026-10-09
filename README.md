@@ -1,12 +1,19 @@
 # 📱 SMS Smishing Classifier
 
-[![CI](https://github.com/linjunway/sms-smishing-classifier/actions/workflows/ci.yml/badge.svg)](https://github.com/linjunway/sms-smishing-classifier/actions)
+[![CI](https://github.com/<your-username>/sms-smishing-classifier/actions/workflows/ci.yml/badge.svg)](https://github.com/<your-username>/sms-smishing-classifier/actions)
 ![Python](https://img.shields.io/badge/python-3.12-blue) ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.8-orange) ![FastAPI](https://img.shields.io/badge/FastAPI-0.143-009688) ![Docker](https://img.shields.io/badge/docker-ready-2496ED)
 
-A production-style ML service that classifies an SMS as **Normal**, **Spam** or **Smishing** (SMS phishing).
-Trained on fewer than 3,000 messages with classical scikit-learn models only, it reaches **96.6 % accuracy** and
-**89.1 % balanced accuracy** on a held-out set of 2,986 messages, and is served through a **FastAPI** REST API,
-a **Streamlit** demo and **Docker**.
+> **End-to-end ML engineering project**: from research notebook to a tested, containerised, continuously deployed service.
+
+SMS phishing ("smishing") is hard to catch because it looks a lot like ordinary promotional spam. This project classifies a
+message as **Normal**, **Spam** or **Smishing** with a two-stage scikit-learn ensemble trained on fewer than 3,000 messages
+(**96.6 % accuracy, 89.1 % balanced accuracy** on 2,986 held-out messages), and wraps it in the tooling a real service needs:
+
+- **Serving:** a validated, documented REST API (FastAPI) plus an interactive Streamlit demo.
+- **Reproducibility:** one shared preprocessing path for training and serving, pinned dependencies, fixed seeds, Docker images that train the model during the build.
+- **Automation:** every push to `main` is linted, tested and Docker-built by GitHub Actions, and the live demo redeploys automatically (see [CI/CD & deployment](#cicd--deployment)).
+
+**🔗 Live demo:** <https://your-app-name.streamlit.app> &nbsp;·&nbsp; **API docs (when running):** `/docs`
 
 ## Results
 
@@ -51,6 +58,39 @@ are robust to the obfuscated spelling common in spam.
 **Feature engineering.** URLs, phone numbers, currency amounts, numbers and emoji are replaced with tokens (shrinking
 the vocabulary while keeping the signal), and urgency features (ALL-CAPS words, `!` count, digit count, URL/phone/currency
 counts, …) are computed on the *raw* text before cleaning.
+
+## CI/CD & deployment
+
+Shipping a change is just `git push`; everything after that is automated.
+
+```mermaid
+flowchart LR
+    Dev[Developer] -->|git push to main| GH[GitHub]
+    GH --> CI[GitHub Actions CI<br/>ruff lint · 15 pytest tests<br/>Docker build · container smoke test]
+    GH -->|webhook| SC[Streamlit Community Cloud<br/>rebuilds and redeploys the app]
+    SC --> Live[Live demo]
+    GH -.->|same repo, same Dockerfile| Host[Any container host<br/>Render · Fly.io · Cloud Run · Kubernetes]
+```
+
+| Stage | Tooling | What it guarantees |
+|---|---|---|
+| **Continuous integration** | GitHub Actions | Each push and PR is linted (`ruff`), tested (`pytest`: preprocessing, model contracts, every API endpoint incl. validation errors), then the Docker image is built and the running container is called over HTTP. |
+| **Continuous deployment** | Streamlit Community Cloud | The app is connected to the repo, so each push to `main` rebuilds the environment from the pinned `requirements.txt` and redeploys. There is no manual release step. |
+| **Portable runtime** | Docker + Compose | The identical code ships as two containers (API and demo). The same `Dockerfile` runs unchanged on any container platform. |
+
+**Why it is set up this way**
+
+- **Fast, low-risk iteration.** Small changes reach users within minutes, and CI catches regressions (a broken endpoint, a feature
+  mismatch between training and serving) before they become incidents. This is the workflow most production ML teams aim for.
+- **Designed to scale out.** The API is stateless: the trained model is baked into the image at build time (or ships as a
+  1.4 MB artefact), nothing is written at request time, and `/health` supports liveness checks. That makes it safe to run
+  several replicas behind a load balancer or an orchestrator. The Streamlit front end talks to it over plain HTTP and can be
+  scaled or replaced independently.
+- **Hosting is a deployment detail, not a code change.** The demo runs *standalone* on Streamlit Cloud's free tier, and the
+  same code runs in *API mode* against a separately hosted API by setting one variable (`API_URL`), with no code changes
+  (see [Deploying the demo](#deploying-the-demo)).
+- **Reproducible builds.** Pinned versions and a model artefact matching the pinned scikit-learn avoid the classic
+  "works on my machine" and pickle-version failures.
 
 ## Quickstart
 
