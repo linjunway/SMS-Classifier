@@ -35,8 +35,8 @@ EXAMPLES = {
                         "Pay now at http://dhl-track-pay.xyz/a1 to avoid return.",
 }
 
-st.set_page_config(page_title="SMS Smishing Classifier", page_icon="📱", layout="wide")
-st.title("📱 SMS Smishing Classifier")
+st.set_page_config(page_title="SMS Classifier", page_icon="📱", layout="wide")
+st.title("📱 SMS Classifier")
 st.caption("Normal vs Spam vs Smishing: Hierarchical Scikit-Learn Ensemble Served Via FastAPI")
 
 
