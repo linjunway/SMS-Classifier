@@ -8,6 +8,7 @@ Two modes:
 """
 import json
 import os
+import sys
 from dataclasses import asdict
 from pathlib import Path
 
@@ -42,7 +43,10 @@ st.caption("Normal vs Spam vs Smishing: Hierarchical Scikit-Learn Ensemble Serve
 @st.cache_resource(show_spinner="Loading model (the first start trains it, ~30 s)...")
 def local_classifier():
     # Must be set before `smsclf` is imported so data/model paths resolve to the repo root.
-    os.environ.setdefault("SMSCLF_HOME", str(Path(__file__).resolve().parents[1]))
+    repo_root = Path(__file__).resolve().parents[1]
+    os.environ.setdefault("SMSCLF_HOME", str(repo_root))
+    if str(repo_root / "src") not in sys.path:  # works without `pip install .`
+        sys.path.insert(0, str(repo_root / "src"))
     from smsclf.classifier import SMSClassifier
     from smsclf.config import MODEL_PATH
 
@@ -56,10 +60,10 @@ def local_classifier():
 @st.cache_data(ttl=60)
 def get_json(path: str):
     if STANDALONE:
+        local_classifier()  # first: sets up sys.path / paths so `smsclf` can be imported
         from smsclf import __version__
         from smsclf.config import METRICS_PATH
 
-        local_classifier()
         if path == "/health":
             return {"status": "ok (embedded model)", "version": __version__}
         return json.loads(METRICS_PATH.read_text())
