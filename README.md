@@ -1,6 +1,6 @@
 # 📱 SMS Smishing Classifier
 
-[![CI](https://github.com/linjunway/sms-smishing-classifier/actions/workflows/ci.yml/badge.svg)](https://github.com/linjunway/sms-smishing-classifier/actions)
+[![CI](https://github.com/linjunway/SMS-Classifier/actions/workflows/ci.yml/badge.svg)](https://github.com/linjunway/SMS-Classifier/actions)
 ![Python](https://img.shields.io/badge/python-3.12-blue) ![scikit-learn](https://img.shields.io/badge/scikit--learn-1.8-orange) ![FastAPI](https://img.shields.io/badge/FastAPI-0.143-009688) ![Docker](https://img.shields.io/badge/docker-ready-2496ED)
 
 > **End-to-end ML engineering project**: from research notebook to a tested, containerised, continuously deployed service.
@@ -13,7 +13,7 @@ message as **Normal**, **Spam** or **Smishing** with a two-stage scikit-learn en
 - **Reproducibility:** one shared preprocessing path for training and serving, pinned dependencies, fixed seeds, Docker images that train the model during the build.
 - **Automation:** every push to `main` is linted, tested and Docker-built by GitHub Actions, and the live demo redeploys automatically (see [CI/CD & deployment](#cicd--deployment)).
 
-**🔗 Live demo:** <https://your-app-name.streamlit.app> &nbsp;·&nbsp; **API docs (when running):** `/docs`
+**🔗 Live demo:** https://sms-classifier-1.streamlit.app/ &nbsp;·&nbsp; **API docs (when running):** `/docs`
 
 ## Results
 
