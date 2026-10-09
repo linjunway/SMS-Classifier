@@ -78,6 +78,20 @@ make demo           # http://localhost:8501  (needs the API running)
 make test           # pytest
 ```
 
+## Deploying the demo
+
+The Streamlit app has two modes, chosen automatically:
+
+| Mode | When | What happens |
+|---|---|---|
+| **API mode** | `API_URL` is set (env var or Streamlit secret) | The UI sends HTTP requests to the FastAPI service. `docker-compose.yml` uses this. |
+| **Standalone mode** | `API_URL` is not set | The UI loads the model in-process (training it on first start if `models/model.joblib` is missing). |
+
+**Streamlit Community Cloud** runs only the Streamlit script, not Docker, so use standalone mode: create the app from this repo
+with main file `app/streamlit_app.py` (it installs from the root `requirements.txt`). To run the full two-service architecture
+instead, deploy the API image (`Dockerfile`) to any container host, e.g. Render, then add
+`API_URL = "https://your-api.onrender.com"` under the app's **Settings → Secrets**.
+
 ## API
 
 ```bash
