@@ -1,0 +1,64 @@
+{
+  "model_version": "1.0.0",
+  "train_rows": 2975,
+  "fit_seconds": 16.4,
+  "overall": {
+    "n": 2986,
+    "accuracy": 0.9662,
+    "balanced_accuracy": 0.891,
+    "macro_f1": 0.8986,
+    "f1_per_class": {
+      "Normal": 0.9927,
+      "Spam": 0.8063,
+      "Smishing": 0.897
+    }
+  },
+  "by_split": {
+    "val": {
+      "n": 1493,
+      "accuracy": 0.9672,
+      "balanced_accuracy": 0.89,
+      "macro_f1": 0.9023,
+      "f1_per_class": {
+        "Normal": 0.9913,
+        "Spam": 0.8016,
+        "Smishing": 0.9141
+      }
+    },
+    "test": {
+      "n": 1493,
+      "accuracy": 0.9652,
+      "balanced_accuracy": 0.8919,
+      "macro_f1": 0.895,
+      "f1_per_class": {
+        "Normal": 0.9941,
+        "Spam": 0.8106,
+        "Smishing": 0.8802
+      }
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "Normal",
+      "Spam",
+      "Smishing"
+    ],
+    "matrix": [
+      [
+        2383,
+        6,
+        1
+      ],
+      [
+        27,
+        206,
+        22
+      ],
+      [
+        1,
+        44,
+        296
+      ]
+    ]
+  }
+}

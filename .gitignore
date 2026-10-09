@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+.ipynb_checkpoints/
+# trained artefact is rebuilt by `make train` / Docker; keep reports/ committed
+models/*.joblib
+build/
